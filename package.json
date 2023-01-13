@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "postcss": {
+    "plugins": {
+      "postcss-nested": {},
+      "postcss-mixins": {}
+    }
+  },
+  "devDependencies": {
+    "nuxt": "^3.0.0",
+    "postcss-mixins": "^9.0.4",
+    "postcss-nested": "^5.0.6",
+    "vite-svg-loader": "^4.0.0"
+  }
+}

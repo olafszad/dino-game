@@ -1,0 +1,64 @@
+.desc {
+  /* Universal settings */
+  color: hsl(var(--clr-black));
+
+  /* Sizes */
+  &--sm {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 22px;
+  }
+
+  &--md {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+  }
+
+  /* Modificators */
+  &--white {
+    color: hsl(var(--clr-white));
+  }
+}
+
+.header {
+  /* Universal settings */
+  color: hsl(var(--clr-black));
+
+  /* Sizes */
+  &--xs {
+    font-size: 12px;
+    letter-spacing: -5%;
+    font-weight: 300;
+  }
+
+  &--sm {
+    font-size: 14px;
+    letter-spacing: -5%;
+    font-weight: 300;
+  }
+
+  &--md {
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  &--lg {
+    @add-mixin spacing font-size, 28, 32;
+    font-weight: 600;
+  }
+
+  &--xl {
+    @add-mixin spacing font-size, 36, 58;
+    font-weight: 600;
+  }
+
+  /* Modificators */
+  &--white {
+    color: hsl(var(--clr-white));
+  }
+
+  &--upper {
+    text-transform: uppercase;
+  }
+}
