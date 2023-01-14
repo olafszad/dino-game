@@ -1,6 +1,7 @@
 <template>
-  <TheHeader></TheHeader>
-  <TheFooter></TheFooter>
+  <Game>
+    <Player></Player>
+  </Game>
 </template>
 
 <style lang="postcss"></style>

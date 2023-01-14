@@ -1,6 +1,7 @@
 import postcssMixins from "./assets/styles/mixins/postcss-mixins";
 import svgLoader from "vite-svg-loader";
 
+
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
   postcss: {
@@ -45,4 +46,15 @@ export default defineNuxtConfig({
       }),
     ],
   },
+  modules: [
+    [
+      '@pinia/nuxt',
+      {
+        autoImports: [
+          'defineStore',
+          ['definestore', 'definePiniaStore'],
+        ],
+      },
+    ],
+  ],
 });
