@@ -6,14 +6,22 @@ const floor1 = ref();
 const floor2 = ref();
 
 setInterval(() => {
-  if (gameStateStore.getGameState === 0) {
-    gameOver();
+  if (gameStateStore.getGameState === 3 || 1) {
+    gameStop();
+  }
+  if (gameStateStore.getGameState === 2) {
+    startGame();
   }
 }, 10);
 
-function gameOver() {
+function gameStop() {
   floor1.value.classList.add("animation-stop");
   floor2.value.classList.add("animation-stop");
+}
+
+function startGame() {
+  floor1.value.classList.remove("animation-stop");
+  floor2.value.classList.remove("animation-stop");
 }
 </script>
 

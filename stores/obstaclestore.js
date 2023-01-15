@@ -18,6 +18,9 @@ export const useObstaclesStore = defineStore("obstacles", {
         }, 5000);
       }
     },
+    resetGame() {
+      this.obstacles = [];
+    },
   },
 });
 

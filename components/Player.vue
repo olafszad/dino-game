@@ -1,14 +1,20 @@
 <script setup>
+import { useGameStateStore } from "~~/stores/gamestatestore";
 import { usePlayerStore } from "~~/stores/playerstore";
 
 const playerStore = usePlayerStore();
+const gameStateStore = useGameStateStore();
 const dino = ref();
 
 function jump() {
-  dino.value.classList.add("jump");
+  if (gameStateStore.gameState === 2) {
+    dino.value.classList.remove("walk");
+    dino.value.classList.add("jump");
+  }
 }
 
 function removeJumpClass() {
+  dino.value.classList.add("walk");
   dino.value.classList.remove("jump");
 }
 
@@ -25,6 +31,22 @@ onMounted(() => {
       window.getComputedStyle(dino.value).getPropertyValue("top")
     );
     playerStore.addPlayerPosition(dinoPosition);
+
+    if (gameStateStore.gameState === 3) {
+      dino.value.classList.remove("walk");
+      dino.value.classList.add("dead");
+      dino.value.classList.remove("jump");
+    }
+
+    if (gameStateStore.gameState === 1) {
+      // dino.value.classList.remove("walk");
+      // dino.value.classList.remove("jump");
+    }
+
+    if (gameStateStore.gameState === 2) {
+      dino.value.classList.remove("dead");
+      dino.value.classList.add("jump");
+    }
   }, 10);
 });
 </script>
@@ -49,7 +71,15 @@ onMounted(() => {
 }
 
 .jump {
-  animation: jump 0.8s;
+  animation: jump 1s;
+}
+
+.walk {
+  animation: walk 0.4s infinite linear;
+}
+
+.dead {
+  background-image: url(~/assets/img/dino-dead.png) !important;
 }
 
 @keyframes jump {
@@ -64,6 +94,21 @@ onMounted(() => {
   }
   100% {
     bottom: 0;
+  }
+}
+
+@keyframes walk {
+  0% {
+    background-image: url(~/assets/img/dino-walk-1.png);
+  }
+  49% {
+    background-image: url(~/assets/img/dino-walk-1.png);
+  }
+  50% {
+    background-image: url(~/assets/img/dino-walk-2.png);
+  }
+  100% {
+    background-image: url(~/assets/img/dino-walk-2.png);
   }
 }
 </style>

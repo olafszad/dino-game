@@ -6,6 +6,8 @@ import { useGameStateStore } from "~~/stores/gamestatestore";
 const obstaclesStore = useObstaclesStore();
 const playerStore = usePlayerStore();
 const gameStateStore = useGameStateStore();
+const btn = ref();
+
 let gameWindowSize = 0;
 
 setInterval(() => {
@@ -14,7 +16,24 @@ setInterval(() => {
 
 onMounted(() => {
   gameWindowSize = document.querySelector(".game__window").clientWidth;
+
+  setInterval(() => {
+    if (gameStateStore.gameState === 2) {
+      btn.value.classList.add("hide-btn");
+    }
+
+    if (gameStateStore.gameState === 3) {
+      btn.value.classList.remove("hide-btn");
+    }
+  }, 10);
 });
+
+function startGame() {
+  console.log("1");
+  gameStateStore.addGameState(2);
+  obstaclesStore.resetGame();
+  console.log("2");
+}
 
 function checkPosibleCollisions() {
   let dinoPositionInPercentagesLeft = 100 - (50 / (gameWindowSize + 2)) * 100;
@@ -42,45 +61,8 @@ function checkPosibleCollisions() {
         (obstacleDistanceFromLeft <= dinoPositionInPercentagesLeft &&
           obstacleDistanceFromLeft >= dinoPositionInPercentagesRight);
 
-      // console.log(obstalePosition, dinoPosition, isCollision);
-
-      // [.120%, .240%] Dino position
-      // console.log(
-      //   "Obstacle position",
-      //   obstacleDistanceFromLeft,
-      //   obstacleDistanceFromRight
-      // );
-      // console.log(
-      //   "Dino position",
-      //   dinoPositionInPercentagesLeft,
-      //   dinoPositionInPercentagesRight
-      // );
-
-      // console.log(
-      //   "Collision",
-      //   dinoPositionInPercentagesLeft >=
-      //     obstacleDistanceFromRight >=
-      //     dinoPositionInPercentagesRight ||
-      //     dinoPositionInPercentagesLeft >=
-      //       obstacleDistanceFromLeft >=
-      //       dinoPositionInPercentagesRight
-      // );
-
-      // console.log(
-      //   (obstacleDistanceFromRight <= dinoPositionInPercentagesLeft &&
-      //     obstacleDistanceFromRight >= dinoPositionInPercentagesRight) ||
-      //     (obstacleDistanceFromLeft <= dinoPositionInPercentagesLeft &&
-      //       obstacleDistanceFromLeft >= dinoPositionInPercentagesRight)
-      // );
-
       return isCollision;
     }
-    // obstacle.right <= dinoPositionInPercentagesLeft &&
-    // obstacle.right >= dinoPositionInPercentagesRight &&
-    // obstacle.right + (obstacle.width / (gameWindowSize + 2)) * 100 <=
-    //   dinoPositionInPercentagesLeft &&
-    // obstacle.right + (obstacle.width / (gameWindowSize + 2)) * 100 >=
-    //   dinoPositionInPercentagesRight
   );
 
   if (filteredObstaclesRightAndLeft.length > 0) {
@@ -88,22 +70,22 @@ function checkPosibleCollisions() {
       filteredObstaclesRightAndLeft[0].class === "cactus" &&
       playerStore.playerPosition >= 198
     ) {
-      gameStateStore.addGameState(0);
+      gameStateStore.addGameState(3);
     } else if (
       filteredObstaclesRightAndLeft[0].class === "big-cactus" &&
       playerStore.playerPosition >= 186
     ) {
-      gameStateStore.addGameState(0);
+      gameStateStore.addGameState(3);
     } else if (
       filteredObstaclesRightAndLeft[0].class === "triple-cactus" &&
-      playerStore.playerPosition >= 185
+      playerStore.playerPosition >= 194
     ) {
-      gameStateStore.addGameState(0);
+      gameStateStore.addGameState(3);
     } else if (
       filteredObstaclesRightAndLeft[0].class === "bat" &&
       playerStore.playerPosition >= 203
     ) {
-      gameStateStore.addGameState(0);
+      gameStateStore.addGameState(3);
     }
   }
 }
@@ -111,6 +93,8 @@ function checkPosibleCollisions() {
 
 <template>
   <div class="game">
+    <div class="game_titie">Dino Game</div>
+    <button ref="btn" class="game__btn-start" @click="startGame">Start</button>
     <div class="game__window-container container">
       <div class="game__window">
         <Player></Player>
@@ -127,18 +111,42 @@ function checkPosibleCollisions() {
   min-height: 100vh;
   justify-content: center;
   align-items: center;
-  background-color: rgb(68, 68, 68);
+  flex-direction: column;
+
+  &__btn-start {
+    border: 0px;
+    background-color: black;
+    border-radius: 3px;
+    position: absolute;
+    color: white;
+    cursor: pointer;
+    z-index: 2;
+    transition: 0.3 s;
+
+    &:hover {
+      background-color: white;
+      border: 1px solid black;
+      color: black;
+    }
+  }
 
   &__window-container {
     position: relative;
     height: 300px;
     border: solid 1px;
-    border-color: red;
     overflow: hidden;
   }
 
   &__window {
     overflow: hidden;
   }
+
+  &_titie {
+    font-size: 30px;
+  }
+}
+
+.hide-btn {
+  display: none;
 }
 </style>

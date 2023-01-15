@@ -12,7 +12,8 @@ const obstaclesSize = [24, 34, 69, 40];
 setInterval(() => {
   if (
     obstaclesStore.obstacles.length !== 100 &&
-    gameStateStore.getGameState !== 0
+    gameStateStore.getGameState !== 3 &&
+    gameStateStore.getGameState !== 1
   ) {
     addObstacle();
   }
@@ -50,7 +51,7 @@ function addObstacle() {
       :class="[
         obstacle.class,
         {
-          'animation-stop': gameStateStore.gameState === 0,
+          'animation-stop': gameStateStore.gameState === 3,
         },
       ]"
     >
@@ -88,12 +89,12 @@ function addObstacle() {
 
 .triple-cactus {
   width: 69px;
-  height: 65px;
+  height: 55px;
   background-image: url(~/assets/img/triple-cactus.png);
   background-size: cover;
   background-repeat: no-repeat;
   position: absolute;
-  bottom: 0;
+  bottom: 1px;
   right: 0;
   animation: move-obstacle 5s forwards linear;
   z-index: 1;
@@ -110,6 +111,25 @@ function addObstacle() {
   right: 0;
   animation: move-obstacle 5s forwards linear;
   z-index: 1;
+}
+
+.bat-fly {
+  animation: bat-fly 1s infinite;
+}
+
+@keyframes bat-fly {
+  0% {
+    background-image: url(~/assets/img/bat-wing-down-1.png);
+  }
+  49% {
+    background-image: url(~/assets/img/bat-wing-down.png);
+  }
+  50% {
+    background-image: url(~/assets/img/bat-wing-up.png);
+  }
+  100% {
+    background-image: url(~/assets/img/bat-wing-up.png);
+  }
 }
 
 .animation-stop {
