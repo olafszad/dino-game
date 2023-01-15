@@ -1,7 +1,26 @@
+<script setup>
+import { useGameStateStore } from "~~/stores/gamestatestore";
+
+const gameStateStore = useGameStateStore();
+const floor1 = ref();
+const floor2 = ref();
+
+setInterval(() => {
+  if (gameStateStore.getGameState === 0) {
+    gameOver();
+  }
+}, 10);
+
+function gameOver() {
+  floor1.value.classList.add("animation-stop");
+  floor2.value.classList.add("animation-stop");
+}
+</script>
+
 <template>
   <div class="environment">
-    <div class="floor-one"></div>
-    <div class="floor-two"></div>
+    <div ref="floor1" class="floor-one"></div>
+    <div ref="floor2" class="floor-two"></div>
   </div>
 </template>
 
@@ -9,8 +28,7 @@
 .floor-one {
   width: 100%;
   height: 13px;
-  background-image: url(~/assets/img/dino-sprites.png);
-  background-position: left -261px top -50px;
+  background-image: url(~/assets/img/floor.png);
   background-size: cover;
   background-repeat: repeat-x;
   position: absolute;
@@ -22,14 +40,17 @@
 .floor-two {
   width: 100%;
   height: 13px;
-  background-image: url(~/assets/img/dino-sprites.png);
-  background-position: left -261px top -50px;
+  background-image: url(~/assets/img/floor.png);
   background-size: cover;
   background-repeat: repeat-x;
   position: absolute;
   bottom: 0;
   left: 100%;
   animation: move-floor-two 5s infinite linear;
+}
+
+.animation-stop {
+  animation-play-state: paused;
 }
 
 @keyframes move-floor-one {

@@ -1,80 +1,126 @@
 <script setup>
-import { useObstaclePositionStore } from "@/stores/gamestore";
+import { useObstaclesStore } from "~~/stores/obstaclestore";
+import { v4 as uuidv4 } from "uuid";
+import { useGameStateStore } from "~~/stores/gamestatestore";
 
-const obstaclePositionStore = useObstaclePositionStore();
-const cactus = ref();
+const obstaclesStore = useObstaclesStore();
+const gameStateStore = useGameStateStore();
+
+const obstacles = ["cactus", "big-cactus", "triple-cactus", "bat"];
 
 onMounted(() => {
-  setInterval(() => {
-    let cactusPosition = parseInt(
-      window.getComputedStyle(cactus.value).getPropertyValue("left")
-    );
-    console.log(obstaclePositionStore.getCount);
-  }, 10);
+  setInterval(() => {}, 10);
 });
+
+setInterval(() => {
+  if (
+    obstaclesStore.obstacles.length !== 100 &&
+    gameStateStore.getGameState !== 0
+  ) {
+    addObstacle();
+  }
+}, Math.floor(Math.random() * (4000 - 1000) + 1000));
+
+function addObstacle() {
+  const randomObstacleId = Math.floor(Math.random() * obstacles.length);
+
+  const obstacle = {
+    uuid: uuidv4(),
+    class: obstacles[randomObstacleId],
+    right: 0,
+    speed: 1.84,
+  };
+
+  const rightMovementInterval = setInterval(() => {
+    obstacle.right += obstacle.speed;
+  }, 10);
+
+  setTimeout(() => {
+    obstaclesStore.removeObstacles();
+    clearInterval(rightMovementInterval);
+  }, 5000);
+
+  obstaclesStore.addObstacle(obstacle);
+}
 </script>
 
 <template>
   <div class="obstacles">
-    <div ref="cactus" id="cactus"></div>
-    <div id="big-cactus"></div>
-    <div id="triple-cactus"></div>
-    <div id="bat"></div>
+    <div
+      v-for="obstacle in obstaclesStore.obstacles"
+      :class="[
+        obstacle.class,
+        {
+          'animation-stop': gameStateStore.gameState === 0,
+        },
+      ]"
+    >
+      {{ obstacle.id }}
+    </div>
+    <!-- <div ref="cactus" id="cactus"></div>
+    <div ref="big-cactus" id="big-cactus"></div>
+    <div ref="triple-cactus" id="triple-cactus"></div>
+    <div ref="bat" id="bat"></div> -->
   </div>
 </template>
 
 <style lang="postcss">
-#cactus {
-  width: 17px;
-  height: 66px;
-  background-image: url(~/assets/img/dino-sprites.png);
-  background-position: left -261px top 28px;
+.cactus {
+  width: 24px;
+  height: 52px;
+  background-image: url(~/assets/img/cactus-small.png);
   background-size: cover;
   background-repeat: no-repeat;
   position: absolute;
   bottom: 0;
   right: 0;
-  animation: move-obstacle 5s infinite linear;
+  animation: move-obstacle 5s forwards linear;
+  z-index: 1;
 }
 
-#big-cactus {
-  width: 28px;
-  height: 66px;
-  background-image: url(~/assets/img/dino-sprites.png);
-  background-position: left -331px top 13px;
+.big-cactus {
+  width: 34px;
+  height: 64px;
+  background-image: url(~/assets/img/cactus-big.png);
   background-size: cover;
   background-repeat: no-repeat;
   position: absolute;
   right: 0;
   bottom: 0;
-  animation: move-obstacle 5s infinite linear;
+  animation: move-obstacle 5s forwards linear;
+  z-index: 1;
 }
 
-#triple-cactus {
-  width: 53px;
-  height: 66px;
-  background-image: url(~/assets/img/dino-sprites.png);
-  background-position: left -433px top 13px;
+.triple-cactus {
+  width: 69px;
+  height: 65px;
+  background-image: url(~/assets/img/triple-cactus.png);
   background-size: cover;
   background-repeat: no-repeat;
   position: absolute;
   bottom: 0;
   right: 0;
-  animation: move-obstacle 5s infinite linear;
+  animation: move-obstacle 5s forwards linear;
+  z-index: 1;
 }
 
-#bat {
-  width: 48px;
-  height: 66px;
-  background-image: url(~/assets/img/dino-sprites.png);
-  background-position: left -132px top 10px;
+.bat {
+  width: 40px;
+  height: 47px;
+  background-image: url(~/assets/img/bat-wing-down.png);
   background-size: cover;
   background-repeat: no-repeat;
   position: absolute;
   bottom: 0;
   right: 0;
-  animation: move-obstacle 5s infinite linear;
+  animation: move-obstacle 5s forwards linear;
+  z-index: 1;
 }
+
+.animation-stop {
+  animation-play-state: paused;
+}
+
 @keyframes move-obstacle {
   0% {
     right: 0;

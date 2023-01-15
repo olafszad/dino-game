@@ -1,4 +1,7 @@
 <script setup>
+import { usePlayerStore } from "~~/stores/playerstore";
+
+const playerStore = usePlayerStore();
 const dino = ref();
 
 function jump() {
@@ -21,10 +24,7 @@ onMounted(() => {
     let dinoPosition = parseInt(
       window.getComputedStyle(dino.value).getPropertyValue("top")
     );
-
-    // if (cactusPosition >= 50 && cactusPosition <= 94 && dinoPosition > 194) {
-    //   alert("hahah noob");
-    // };
+    playerStore.addPlayerPosition(dinoPosition);
   }, 10);
 });
 </script>
@@ -38,29 +38,29 @@ onMounted(() => {
 <style lang="postcss">
 #dino {
   width: 44px;
-  height: 66px;
-  background-image: url(~/assets/img/dino-sprites.png);
-  background-position: left -855px top 16px;
+  height: 48px;
+  background-image: url(~/assets/img/dino.png);
   background-size: cover;
   background-repeat: no-repeat;
   position: absolute;
   bottom: 0;
   left: 50px;
+  z-index: 2;
 }
 
 .jump {
-  animation: jump 0.5s;
+  animation: jump 0.8s;
 }
 
 @keyframes jump {
   0% {
     bottom: 0;
   }
-  45% {
-    bottom: 80px;
+  50% {
+    bottom: 124px;
   }
   60% {
-    bottom: 80px;
+    bottom: 124px;
   }
   100% {
     bottom: 0;
