@@ -7,10 +7,7 @@ const obstaclesStore = useObstaclesStore();
 const gameStateStore = useGameStateStore();
 
 const obstacles = ["cactus", "big-cactus", "triple-cactus", "bat"];
-
-onMounted(() => {
-  setInterval(() => {}, 10);
-});
+const obstaclesSize = [24, 34, 69, 40];
 
 setInterval(() => {
   if (
@@ -28,7 +25,9 @@ function addObstacle() {
     uuid: uuidv4(),
     class: obstacles[randomObstacleId],
     right: 0,
-    speed: 1.84,
+    width: obstaclesSize[randomObstacleId],
+    // speed: 2.36,
+    speed: 0.2,
   };
 
   const rightMovementInterval = setInterval(() => {
@@ -57,10 +56,6 @@ function addObstacle() {
     >
       {{ obstacle.id }}
     </div>
-    <!-- <div ref="cactus" id="cactus"></div>
-    <div ref="big-cactus" id="big-cactus"></div>
-    <div ref="triple-cactus" id="triple-cactus"></div>
-    <div ref="bat" id="bat"></div> -->
   </div>
 </template>
 

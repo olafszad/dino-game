@@ -6,41 +6,106 @@ import { useGameStateStore } from "~~/stores/gamestatestore";
 const obstaclesStore = useObstaclesStore();
 const playerStore = usePlayerStore();
 const gameStateStore = useGameStateStore();
+let gameWindowSize = 0;
 
 setInterval(() => {
   checkPosibleCollisions();
 }, 10);
 
+onMounted(() => {
+  gameWindowSize = document.querySelector(".game__window").clientWidth;
+});
+
 function checkPosibleCollisions() {
-  const filteredObstacles = obstaclesStore.obstacles.filter(
-    (obstacle) => obstacle.right <= 870 && obstacle.right >= 820
+  let dinoPositionInPercentagesLeft = 100 - (50 / (gameWindowSize + 2)) * 100;
+  let dinoPositionInPercentagesRight = 100 - (94 / (gameWindowSize + 2)) * 100;
+
+  const filteredObstaclesRightAndLeft = obstaclesStore.obstacles.filter(
+    (obstacle) => {
+      const obstacleDistanceFromRight = obstacle.right;
+      const obstacleDistanceFromLeft =
+        obstacle.right + (obstacle.width / (gameWindowSize + 2)) * 100;
+
+      const obstalePosition = {
+        obstacleDistanceFromLeft,
+        obstacleDistanceFromRight,
+      };
+
+      const dinoPosition = {
+        dinoPositionInPercentagesLeft,
+        dinoPositionInPercentagesRight,
+      };
+
+      const isCollision =
+        (obstacleDistanceFromRight <= dinoPositionInPercentagesLeft &&
+          obstacleDistanceFromRight >= dinoPositionInPercentagesRight) ||
+        (obstacleDistanceFromLeft <= dinoPositionInPercentagesLeft &&
+          obstacleDistanceFromLeft >= dinoPositionInPercentagesRight);
+
+      // console.log(obstalePosition, dinoPosition, isCollision);
+
+      // [.120%, .240%] Dino position
+      // console.log(
+      //   "Obstacle position",
+      //   obstacleDistanceFromLeft,
+      //   obstacleDistanceFromRight
+      // );
+      // console.log(
+      //   "Dino position",
+      //   dinoPositionInPercentagesLeft,
+      //   dinoPositionInPercentagesRight
+      // );
+
+      // console.log(
+      //   "Collision",
+      //   dinoPositionInPercentagesLeft >=
+      //     obstacleDistanceFromRight >=
+      //     dinoPositionInPercentagesRight ||
+      //     dinoPositionInPercentagesLeft >=
+      //       obstacleDistanceFromLeft >=
+      //       dinoPositionInPercentagesRight
+      // );
+
+      // console.log(
+      //   (obstacleDistanceFromRight <= dinoPositionInPercentagesLeft &&
+      //     obstacleDistanceFromRight >= dinoPositionInPercentagesRight) ||
+      //     (obstacleDistanceFromLeft <= dinoPositionInPercentagesLeft &&
+      //       obstacleDistanceFromLeft >= dinoPositionInPercentagesRight)
+      // );
+
+      return isCollision;
+    }
+    // obstacle.right <= dinoPositionInPercentagesLeft &&
+    // obstacle.right >= dinoPositionInPercentagesRight &&
+    // obstacle.right + (obstacle.width / (gameWindowSize + 2)) * 100 <=
+    //   dinoPositionInPercentagesLeft &&
+    // obstacle.right + (obstacle.width / (gameWindowSize + 2)) * 100 >=
+    //   dinoPositionInPercentagesRight
   );
 
-  if (filteredObstacles.length > 0) {
+  if (filteredObstaclesRightAndLeft.length > 0) {
     if (
-      filteredObstacles[0].class === "cactus" &&
+      filteredObstaclesRightAndLeft[0].class === "cactus" &&
       playerStore.playerPosition >= 198
     ) {
       gameStateStore.addGameState(0);
     } else if (
-      filteredObstacles[0].class === "big-cactus" &&
+      filteredObstaclesRightAndLeft[0].class === "big-cactus" &&
       playerStore.playerPosition >= 186
     ) {
       gameStateStore.addGameState(0);
     } else if (
-      filteredObstacles[0].class === "triple-cactus" &&
+      filteredObstaclesRightAndLeft[0].class === "triple-cactus" &&
       playerStore.playerPosition >= 185
     ) {
       gameStateStore.addGameState(0);
     } else if (
-      filteredObstacles[0].class === "bat" &&
+      filteredObstaclesRightAndLeft[0].class === "bat" &&
       playerStore.playerPosition >= 203
     ) {
       gameStateStore.addGameState(0);
     }
   }
-
-  return filteredObstacles;
 }
 </script>
 
