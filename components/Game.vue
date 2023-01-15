@@ -121,7 +121,7 @@ function checkPosibleCollisions() {
     color: white;
     cursor: pointer;
     z-index: 2;
-    transition: 0.3 s;
+    transition: background-color 0.5s, color 0.5s, border 0.5s;
 
     &:hover {
       background-color: white;
