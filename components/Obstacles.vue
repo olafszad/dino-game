@@ -115,7 +115,7 @@ function addObstacle() {
 }
 
 .bat-fly {
-  animation: bat-fly 5s infinite linear;
+  animation: bat-fly 5s forwards linear;
 }
 
 @keyframes bat-fly {
