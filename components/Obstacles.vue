@@ -52,6 +52,7 @@ function addObstacle() {
         obstacle.class,
         {
           'animation-stop': gameStateStore.gameState === 3,
+          'bat-fly': obstacle.class === 'bat',
         },
       ]"
     >
@@ -114,21 +115,44 @@ function addObstacle() {
 }
 
 .bat-fly {
-  animation: bat-fly 1s infinite;
+  animation: bat-fly 5s infinite linear;
 }
 
 @keyframes bat-fly {
   0% {
-    background-image: url(~/assets/img/bat-wing-down-1.png);
+    background-image: url(~/assets/img/bat-wing-down.png);
+    right: 0;
   }
-  49% {
+  10% {
+    background-image: url(~/assets/img/bat-wing-up.png);
+  }
+  20% {
+    background-image: url(~/assets/img/bat-wing-down.png);
+  }
+  30% {
+    background-image: url(~/assets/img/bat-wing-up.png);
+  }
+  40% {
     background-image: url(~/assets/img/bat-wing-down.png);
   }
   50% {
     background-image: url(~/assets/img/bat-wing-up.png);
   }
-  100% {
+  60% {
+    background-image: url(~/assets/img/bat-wing-down.png);
+  }
+  70% {
     background-image: url(~/assets/img/bat-wing-up.png);
+  }
+  80% {
+    background-image: url(~/assets/img/bat-wing-down.png);
+  }
+  90% {
+    background-image: url(~/assets/img/bat-wing-up.png);
+  }
+  100% {
+    background-image: url(~/assets/img/bat-wing-down.png);
+    right: 100%;
   }
 }
 
